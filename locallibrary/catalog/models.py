@@ -121,16 +121,16 @@ class People_Project(models.Model):
 class People_Major(models.Model):
     people = models.ForeignKey('People', on_delete= models.CASCADE)
     major = models.ForeignKey('Major', on_delete= models.CASCADE)
-    class Meta:
-        auto_created = True
+    # class Meta:
+    #     auto_created = True
     def __str__(self):
         return "Person "+ str(self.people) + "<--> Major "+ str(self.major)
 
 class People_Minor(models.Model):
     people = models.ForeignKey('People', on_delete= models.CASCADE)
     minor = models.ForeignKey('Minor', on_delete= models.CASCADE)
-    class Meta:
-        auto_created = True
+    # class Meta:
+    #     auto_created = True
     def __str__(self):
         return "Person "+ str(self.people) + "<--> Minor "+ str(self.minor)
 
