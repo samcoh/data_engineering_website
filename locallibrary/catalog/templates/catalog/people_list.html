@@ -1,0 +1,90 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<head>
+  <style>
+    header{
+        font-family: 'Playfair Display', serif;
+        font-weight:900;
+        font-size: 80px;
+        text-transform: uppercase;
+        display: inline-block;
+        line-height: 72px;
+        margin-bottom: 20px;
+        text-align: center;
+
+    }
+  * {
+    box-sizing: border-box;
+  }
+
+  .column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+
+  /* Clearfix (clear floats) */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: auto;
+    margin: left;
+    text-align: center;
+    background-color: 	rgb(255,255,255);
+  }
+
+  .font-color-white{
+    color: black;
+  }
+  .align-text {
+    text-align: center;
+  }
+  .subhead{
+      text-transform: uppercase;
+      border-bottom: 2px solid #2f2f2f;
+      border-top: 2px solid #2f2f2f;
+      padding: 12px 0 12px 0;
+
+  }
+
+  </style>
+  <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+   <header>Members</header>
+  </head>
+  <div class = "subhead">
+    </div>
+    <br></br>
+    <div class = "font-color-white">
+  {% if people_list %}
+      <div class="row">
+        {% for people in people_list %}
+        <div class="column">
+          <figure style= "text-align:center;">
+            <a href="{% url 'people-detail' people.pk %}" style = "font-size:20px"><img src="{{ people.picture.url }}" width = "300" height= "300" ></a>
+            <figcaption> <a href="{% url 'people-detail' people.pk %}" style = "font-size:20px">{{ people.first_name }} {{ people.last_name}}</a> ({% if people.role == "SRE" %}Senior Editor{% else %}Member{% endif %})
+              {% if user.is_authenticated %}
+              <br><a href="{% url 'people_update' people.pk %}"> <i class="fa fa-pencil"></i>Edit Profile</a>{% endif %}
+               {% if user.is_staff %}|
+              <a href="{% url 'people_delete' people.pk %}"><i class="fa fa-trash"></i> Delete Profile </a> </br>
+              {% endif %}
+            </figcaption>
+
+            <br></br>
+          </figure>
+          </div>
+    {% endfor %}
+  {% else %}
+      <p>There are no members on the Michigan Daily Data Engineering Team.</p>
+  {% endif %}
+  </div>
+</div>
+<!-- </div> -->
+
+  </body>
+
+{% endblock %}

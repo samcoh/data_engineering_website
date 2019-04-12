@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<style>
+p {
+  font-size: 18px;
+</style>
+<h1>Delete Person</h1>
+<body>
+<p>Are you sure you want to delete {{ people.first_name }} {{ people.last_name }}'s profile?
+  <br></br> <strong style = "color:red;">WARNING: you cannot undue this action!</strong>  </p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+</form>
+</body>
+{% endblock %}

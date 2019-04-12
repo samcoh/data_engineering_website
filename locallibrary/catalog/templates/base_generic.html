@@ -1,0 +1,63 @@
+{% extends 'base_bootstrap.html' %}
+{% load app_tags %} <!-- see home/templatetags/app_tags.py -->
+{% block navbar %}
+<style>
+.text-size{
+  font-size: 16px;
+}
+</style>
+<div class= "text-size">
+<!-- https://www.w3schools.com/booTsTrap/bootstrap_navbar.asp -->
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'catalog' %}">{{ settings.APP_NAME }}</a>
+        {%load static%}
+        <img src="{% static 'icon.jpg' %}" height= "50px" width = "50px" >
+    </div>
+    <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
+    <ul class="nav navbar-nav">
+      {% url 'catalog' as catalog %}
+      <li {% if request.get_full_path == catalog %}class="active"{% endif %}>
+          <a href="{% url 'catalog' %}">Home</a></li>
+      {% url 'people' as people %}
+        <li {% if request.get_full_path == people %}class="active"{% endif %}>
+            <a href="{% url 'people' %}">Team</a></li>
+      {% url 'project' as project %}
+        <li {% if request.get_full_path == project %}class="active"{% endif %}>
+            <a href="{% url 'project' %}">Projects</a></li>
+        </ul>
+
+       </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      {% if user.is_authenticated %}
+      {% url 'project_create' as project_create %}
+      <li {% if request.get_full_path == project_create %}class="active"{% endif %}>
+          <a href="{% url 'project_create' %}">Create Project</a></li>
+      {% url 'people_create' as people_create %}
+      <li {% if request.get_full_path == people_create %}class="active"{% endif %}>
+          <a href="{% url 'people_create' %}">Create Profile</a></li>
+      {% url 'people' as people %}
+      <li {% if request.get_full_path == people %}class="active"{% endif %}>
+          <a href="{% url 'people' %}">Edit Profiles</a></li>
+      {% url 'project' as project %}
+      <li {% if request.get_full_path == project %}class="active"{% endif %}>
+          <a href="{% url 'project' %}">Edit Projects</a></li>
+
+      <li class="dropdown">
+      <!-- gravatar depends on app_tags being loaded -->
+      <a href="#" data-toggle="dropdown" class="dropdown-toggle"><img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'logout' %}?next={{ catalog }}">Logout</a></li>
+        </ul>
+       </li>
+       {% else %}
+       <li><a href="{% url 'login' %}?next={{ catalog }}">Login</a></li>
+       {% endif %}
+    </ul>
+
+  </div>
+</nav>
+</div>
+{% endblock %}

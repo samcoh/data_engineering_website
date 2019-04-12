@@ -1,0 +1,174 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<style>
+.card {
+  margin: left;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 350px;
+  padding: 10px;
+  text-align: center;
+  background-color: #f9f7f1;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+
+.card_projects {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: auto;
+  height: auto;
+  padding: 15px;
+  text-align: left;
+  background-color: #f9f7f1;
+}
+.font-color-black{
+  color: black;
+
+}
+.imageContainer {
+      width:100px;
+      height:100px;
+      background-image: url('static/pin.jpg');
+}
+.verticalLine {
+  border-top: 0.5px solid #2f2f2f;
+  height: 100%;
+}
+
+<!-- .body {
+  background-image: url("static/pin_board.jpg");
+    background-repeat:no-repeat;
+     height: auto;
+     width: auto;
+} -->
+.subhead{
+    text-transform: uppercase;
+    border-bottom: 2px solid #2f2f2f;
+    border-top: 2px solid #2f2f2f;
+    padding: 12px 0 12px 0;
+
+}
+header{
+    font-family: 'Playfair Display', serif;
+    font-weight:900;
+    font-size: 80px;
+    text-transform: uppercase;
+    display: inline-block;
+    line-height: 72px;
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+.column-right {
+  width: 65%;
+  float: right;
+  padding: 10px;
+  <!-- height: 300px; /* Should be removed. Only for demonstration */ -->
+}
+
+.column-left {
+  width: 35%;
+  float: left;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.font-size-18{
+  font-size: 18px;
+}
+hr {
+  color: 	#708090;
+}
+</style>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+   <header style = "text-align:center;"> {{people.first_name}}'s Profile </header>
+</head>
+<div class = "subhead">
+  </div>
+<body>
+  <br></br>
+<div  class ="row">
+  <div class = "column-left">
+    <div class = "card" >
+      <div class = "font-color-black">
+      <img src="{{ people.picture.url }}" style = 'width:100%' >
+      <h1 style= "text-align:center">{{people.first_name}} {{people.last_name}}   {% if user.is_authenticated %}
+          <a href="{% url 'people_update' people.pk %}" style="font-size:20px"><i class="fa fa-pencil"></i></a>
+          {% endif %}
+          {% if user.is_staff %}
+          <a href="{% url 'people_delete' people.pk %}"style="font-size:20px"><i class="fa fa-trash"></i></a>
+          {%endif%}</h1>
+      <p class="title" style = "font-size:18px;text-align:center;"><strong> {% if people.role == "SRE" %}Senior Editor{% else %}Member{% endif %}</strong></p>
+      <p style = "font-size:16px"><strong> Email: </strong> {{ people_major }}{{people.email}}  </p>
+      <p style = "font-size:16px"> <strong>Year:</strong> {% if people.year_in_school == 'FR' %} Freshman {% endif %}
+          {% if people.year_in_school == 'SO' %} Sophomore {% endif %}{% if people.year_in_school == 'JR' %}
+              Junior {% endif %}{% if people.year_in_school == 'SR' %} Senior {% endif %} </p>
+    <p style = "font-size:16px">{% if people.majors.all %} <strong>Major</strong><br>| {% for major in people.majors.all %} {{ major }} | {%endfor%} {%else%}<strong>Major: </strong>Undeclared{%endif%}</p>
+    <p style = "font-size:16px">{% if people.minors.all %}  <strong>Minor</strong> <br> | {% for minor in people.minors.all %} {{ minor }} | {%endfor%} {%else%} {%endif%} </br></p>
+    <p></p>
+    <!-- {% if user.is_authenticated %}
+    <a href="{% url 'people_update' people.pk %}"><i class="fa fa-pencil"></i>Edit Profile</a> |
+    <a href="{% url 'people_delete' people.pk %}"><i class="fa fa-trash"></i> Delete Profile </a> -->
+    <!-- <br></br> -->
+    <!-- {%endif%} -->
+</div>
+</div>
+
+</div>
+{% if people.projects.all %}
+<div class = "column-right">
+  <div class = "card_projects">
+      <a href="{% url 'people' %}" style = "font-size:18px;position:absolute;float:right;"> Back to People </a>
+      <div class = "font-color-black">
+    <h1 style="text-align:center"> {{people.first_name}}'s Projects </h1>
+    <!-- <hr style = "background-color:grey;color:black;height:1px;"> -->
+    <hr>
+{% for project in people.projects.all %}
+        <ul>
+          <h2>{{ project.name }}
+            {% if user.is_authenticated %}
+            <a href="{% url 'project_update' project.pk %}" style="font-size:25px"><i class="fa fa-pencil"></i></a>
+            {%endif%} </h2><strong class = "title" style= "font-size:18px"> ({{ project.start_date }} - {% if project.end_date %}{{ project.end_date }} {% else %} Present {% endif %})</strong>
+          <p style= "font-size:18px"><strong>Published: </strong>{{ project.published }} {% if project.section %} | <strong>Section:</strong> {{ project.section }} </p>
+          {% endif %}
+        <p style= "font-size:18px" ><strong>Description: </strong><br> {{ project.description }}</br></p>
+        <p style= "font-size:18px"> <a href="{% url 'project-detail' project.pk %}"><strong> More Info </strong></a> 
+        </ul>
+        <!-- {% if user.is_authenticated %}
+        <br><a href="{% url 'project_update' project.pk %}" style= "float:right;"><i class="fa fa-pencil"></i>Edit Project</a> </br>
+        {%endif%} -->
+        <hr>
+{% endfor %}
+</div>
+</div>
+</div>
+</div>
+{%else%}
+<div class = "column-right">
+  <div class = "card_projects" >
+      <div class = "font-color-black">
+    <a href="{% url 'people' %}" style = "font-size:18px;position:absolute;float:right;"> Back to People </a>
+    <h1 style = "text-align:center;" style = "float:center;"> {{people.first_name}}'s Projects </h1>
+  <hr>
+    <h2>{{people.first_name}} has no projects yet!</h2><br></br>
+    {% if user.is_authenticated %}
+    <a href="{% url 'people_update' people.pk %}" style= "float:right;"><i class="fa fa-pencil"></i>Add Project</a>
+    {%endif%}
+    <br></br>
+      </div>
+  </div>
+</div>
+{%endif%}
+
+</body>
+{% endblock %}

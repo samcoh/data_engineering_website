@@ -1,0 +1,266 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: auto;
+  height: auto;
+  padding : 15px;
+  margin: left;
+  text-align: left;
+  background-color: #f9f7f1;
+
+}
+.font-color-black{
+  color: black;
+}
+.column {
+  float: left;
+   width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+strong{
+  font-size: 18px;
+}
+p {
+  font-size: 18px;
+}
+.subhead{
+    text-transform: uppercase;
+    border-bottom: 2px solid #2f2f2f;
+    border-top: 2px solid #2f2f2f;
+    padding: 12px 0 12px 0;
+}
+header{
+    font-family: 'Playfair Display', serif;
+    font-weight:900;
+    font-size: 80px;
+    text-transform: uppercase;
+    display: inline-block;
+    line-height: 72px;
+    margin-bottom: 20px;
+}
+
+.projecttitle{
+    color: grey;
+}
+
+
+.container {
+  width: 100%;
+}
+.progressbar {
+  counter-reset: step;
+}
+.progressbar li {
+  list-style: none;
+  display: inline-block;
+  width: 20%;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+}
+.progressbar li:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 30px;
+  height: 30px;
+  line-height : 30px;
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  background-color: white;
+}
+.progressbar li:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #ddd;
+  top: 15px;
+  left: -50%;
+  z-index : -1;
+}
+.progressbar li:first-child:after {
+  content: none;
+}
+.progressbar li.active {
+  color: green;
+}
+.progressbar li.active:before {
+  border-color: green;
+}
+.progressbar li.active + li:after {
+  background-color: green;
+}
+/* .container{
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+}
+.progressbar li{
+  float: left;
+  width: 20%;
+  position: relative;
+  text-align: center;
+  counter-reset: step;
+}
+.progressbar {
+  counter-reset: step;
+}
+.progressbar li:before{
+  content:counter(step);
+  counter-increment: step;
+  content: "1";
+  width: 30px;
+  height: 30px;
+  border: 2px solid #bebebe;
+  display: block;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  line-height: 27px;
+  background: white;
+  color: #bebebe;
+  text-align: center;
+  font-weight: bold;
+}
+.progressbar li:after{
+  content: '';
+  position: absolute;
+  width:100%;
+  height: 3px;
+  background: #979797;
+  top: 15px;
+  left: -50%;
+  z-index: -1;
+}
+.progressbar li.active + li:after{
+ background: #3aac5d;
+}
+.progressbar li.active + li:before{
+border-color: #3aac5d;
+background: #3aac5d;
+color: white
+}
+.progressbar li:first-child:after{
+content: none;
+} */
+
+</style>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+   <header style = "text-align:center;"> Project Details </header>
+
+</head>
+<body>
+<div class = "subhead">
+</div>
+<br></br>
+<div class = "card">
+  <div style= "float:right">
+  <!-- {% if user.is_authenticated %}
+  <br><a href="{% url 'project_update' project.pk %}"><i class="fa fa-pencil"></i> Edit Project</a> |
+  <a href="{% url 'project_delete' project.pk %}"><i class="fa fa-trash"></i> Delete Project </a></br>
+  {%endif%} -->
+  </div>
+  <div class = "font-color-black">
+    <ul>
+    <h1> {{project.name}}  {% if user.is_authenticated %}
+      <a href="{% url 'project_update' project.pk %}"style="font-size:25px"><i class="fa fa-pencil"></i></a>
+      <a href="{% url 'project_delete' project.pk %}"style="font-size:25px"><i class="fa fa-trash"></i></a>
+      {%endif%}
+    </h1>
+    </ul>
+    <ul>
+    <p1><strong class = "projecttitle">({{ project.start_date }} - {%if project.end_date%}{{project.end_date}}{%else%}Present {%endif%})</strong></p1>
+    <br></br>
+    <p>{%if project.published == 'No' %}<strong>Published:</strong> {{project.published }}
+     {%else%}<strong> Published:</strong> {{project.published}} |
+    {% if project.section_id %}
+      <strong>Section:</strong> {{ project.section_id }}
+    {%else%}  {%endif%}</p>
+    {% endif %}
+    <p><strong>Description: </strong><br> {{ project.description }}</br</p>
+
+    {% if user.is_authenticated %}
+    <p><strong>Backend Progress:</strong><br></br></p>
+
+    <div class="container">
+      <ul class="progressbar">
+        {% if project.backend_progress == "None" %}
+        <strong>
+          <li> Data Collection <span> &#x2718 </span></li>
+          <li> Data Cleaning <span> &#x2718 </span></li>
+          <li> Data Analysis <span> &#x2718 </span></li>
+          <li> Insight Report <span> &#x2718 </span></li>
+        </strong>
+
+        {% elif project.backend_progress == "Insight Report" %}
+        <strong>
+        <li class="active"> Data Collection <span> &#10003</span> </li>
+        <li class="active"> Data Cleaning <span> &#10003</span></li>
+        <li class="active"> Data Analysis <span> &#10003</span></li>
+        <li class="active"> Insight Report <span> &#10003</span></li>
+        </strong>
+
+        {% elif project.backend_progress == "Data Analysis" %}
+        <strong>
+        <li class="active"> Data Collection <span> &#10003</span></li>
+        <li class="active"> Data Cleaning <span> &#10003</span></li>
+        <li class="active"> Data Analysis <span> &#10003</span></li>
+        <li> Insight Report <span> &#x2718 </span></li>
+        </strong>
+
+        {% elif project.backend_progress == "Data Cleaning" %}
+        <strong>
+        <li class="active">Data Collection <span> &#10003</span></li>
+        <li class="active"> Data Cleaning <span> &#10003</span></li>
+        <li> Data Analysis <span> &#x2718 </span></li>
+        <li> Insight Report <span> &#x2718 </span></li>
+        </strong>
+
+        {% elif project.backend_progress == "Data Collection" %}
+        <strong>
+        <li class="active"> Data Collection <span> &#10003</span></li>
+        <li> Data Cleaning <span> &#x2718 </span></li>
+        <li> Data Analysis <span> &#x2718 </span></li>
+        <li> Insight Report <span> &#x2718 </span> </li>
+        </strong>
+        {% endif %}
+      </ul>
+    </div>
+    {%endif%}
+    <br></br>
+
+</div>
+</div>
+<h1></h1>
+<div class = "card"  >
+  <div class = "font-color-black">
+  <ul>
+  <h1> Contributors </h1>
+  </ul>
+  {% if project.peoples.all %}
+    {% for people in project.peoples.all %}
+    <ul>
+    <a href="{% url 'people-detail' people.pk %}" style = "font-size:18px" >{{ people.first_name }} {{ people.last_name}}</a> ({% if people.role == "SRE" %}Senior Editor{% else %}Member{% endif %})
+    </ul>
+    {%endfor%}
+    <br></br>
+    <a href="{% url 'project' %}" style = "font-size:18px;margin-left:left;"> Back to Projects </a>
+  {%else%}
+  There are no contributors for this project yet.
+  {%endif%}
+</div>
+</div>
+<BR></BR>
+</body>
+{% endblock %}
