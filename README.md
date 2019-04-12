@@ -1,11 +1,12 @@
-# django_final_project
+# Data Engineering Website for the Michihgan Daily Web Team
 Final Project for SI 364
 
-I  am going to build a public facing website for the Michigan Daily Data Engineering team. This web application will help the organization run more efficiently because it will show the projects we are currently working on. As well, it will show the projects that have been published in the paper, and the individuals on the team that have worked on them. 
+This is a public facing website for the Michigan Daily Data Engineering team. This web application displays all the work done by the team throughout the year. As well, it serves a functional purpose by allowing the organization to run more efficiently. Team members will be able to see what projects need to be worked on. As well, different departments can view the projects that data engineering is working on, projects that have been published in the paper, and it shows indiviudals who are working on the different projects displayed on the site.  Departments will be able to reach out to the team if they want to collaborate on a project being worked on. 
 
 The website will allow logged-in end users to input different projects they are working on, enter in start dates and end dates when different steps of a project get completed, and information about themselves (i.e, email and phone number). This project is similar to Salesforce. Salesforce is a platform that companies use for case management and task management.  At the company I worked for last summer we used Salesforce to keep track of all different cases we were working on, and a platform like this will be very useful for the Data Engineering team. 
 
-The data that will be featured on the website is information about the people working on the team, data about projects and their progress, and if a project has been published in the Newspaper. I started thinking about the different tables I will create, and the different  attributes and relationships the tables will have with one another. This information is described in detail below. 
+The data that will be featured on the website is information about the people working on the team, data about projects and their progress, and if a project has been published in the Newspaper.
+
 
 Table Descriptions: 
 
