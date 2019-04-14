@@ -173,9 +173,12 @@ content: none;
   </div>
   <div class = "font-color-black">
     <ul>
-    <h1> {{project.name}}  {% if user.is_authenticated %}
+    <h1> {{project.name}}
+    {% if user.is_staff %}
       <a href="{% url 'project_update' project.pk %}"style="font-size:25px"><i class="fa fa-pencil"></i></a>
       <a href="{% url 'project_delete' project.pk %}"style="font-size:25px"><i class="fa fa-trash"></i></a>
+    {% elif user.is_authenticated %}
+      <a href="{% url 'project_update' project.pk %}"style="font-size:25px"><i class="fa fa-pencil"></i></a>
       {%endif%}
     </h1>
     </ul>
@@ -184,8 +187,8 @@ content: none;
     <br></br>
     <p>{%if project.published == 'No' %}<strong>Published:</strong> {{project.published }}
      {%else%}<strong> Published:</strong> {{project.published}} |
-    {% if project.section_id %}
-      <strong>Section:</strong> {{ project.section_id }}
+    {% if project.section %}
+      <strong>Section:</strong> {{ project.section }}
     {%else%}  {%endif%}</p>
     {% endif %}
     <p><strong>Description: </strong><br> {{ project.description }}</br</p>
